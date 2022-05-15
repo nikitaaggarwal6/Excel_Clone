@@ -29,12 +29,53 @@ formulaBar.addEventListener("keydown", (e) => {
 
         let evaluatedValue = evaluateFormula(inputFormula);
 
+
+        addChildToGraphComponent(inputFormula,  address);
+        // Check formula is cyclic or not, then only evaluate
+        // True -> cycle, False -> not cyclic
+        let isCyclic = isGraphCyclic(graphComponentMatrix);
+        if (isCyclic === true) {
+            alert("Your formula forms cycle!");
+            removeChildFromGraphComponent(inputFormula, address);
+            return;
+        }
+
         setCellUIAndCellProp(evaluatedValue, inputFormula, address);   // To update UI, DB
         addChildToParent(inputFormula);   /// To add child (current) cell address to parents cell's children array
         updateChildrenCells(address);
-        console.log(cellProp.children);
+        // console.log(cellProp.children);
     }
 })
+
+
+function removeChildFromGraphComponent(formula, childAddress) {
+    let [crid, ccid] = decodeRidCidUsingAddress(childAddress);
+    let encodedFormula = formula.split(" ");
+    for (let i = 0; i < encodedFormula.length; i++) {
+        let asciiValue = encodedFormula[i].charCodeAt(0);
+        if(asciiValue >= 65 && asciiValue <= 90) {
+            let [prid, pcid] = decodeRidCidUsingAddress(encodedFormula[i]);
+            // B1: A1 + 10
+            // rid -> i, cid -> j
+            graphComponentMatrix[prid][pcid].pop();
+        }
+    }
+}
+
+
+function addChildToGraphComponent(formula, childAddress) {
+    let [crid, ccid] = decodeRidCidUsingAddress(childAddress);
+    let encodedFormula = formula.split(" ");
+    for (let i = 0; i < encodedFormula.length; i++) {
+        let asciiValue = encodedFormula[i].charCodeAt(0);
+        if(asciiValue >= 65 && asciiValue <= 90) {
+            let [prid, pcid] = decodeRidCidUsingAddress(encodedFormula[i]);
+            // B1: A1 + 10
+            // rid -> i, cid -> j
+            graphComponentMatrix[prid][pcid].push([crid, ccid]);
+        }
+    }
+}
 
 
 function updateChildrenCells(parentAddress) {
