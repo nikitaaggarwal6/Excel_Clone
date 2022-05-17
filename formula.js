@@ -1,22 +1,25 @@
-allCells.forEach(cell => {
-    cell.addEventListener("blur", (e) => {
-        let address = addressBar.value;
-        let [activeCell, cellProp] = getCellAndCellProp(address);
-        let enteredData = activeCell.innerText;
+for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < cols; j++) {
+        let cell = document.querySelector(`.cell[rid="${i}"][cid="${j}"]`);
+        cell.addEventListener("blur", (e) => {
+            let address = addressBar.value;
+            let [activeCell, cellProp] = getCellAndCellProp(address);
+            let enteredData = activeCell.innerText;
 
-        if (enteredData === cellProp.value) return;
+            if (enteredData === cellProp.value) return;
 
-        cellProp.value = enteredData;
+            cellProp.value = enteredData;
 
-        // If data modifies remove P-C relation, formula empty, update children with modified value
-        removeChildFromParent(cellProp.formula);
-        cellProp.formula = "";
-        updateChildrenCells(address);
-        
-    })
-})
+            // If data modifies remove P-C relation, formula empty, update children with modified value
+            removeChildFromParent(cellProp.formula);
+            cellProp.formula = "";
+            updateChildrenCells(address);
 
+        })
+    }
+}
 
+let formulaBar = document.querySelector(".formula-bar");
 formulaBar.addEventListener("keydown", async (e) => {
     let inputFormula = formulaBar.value;
     if (e.key === "Enter" && inputFormula) {
@@ -28,10 +31,9 @@ formulaBar.addEventListener("keydown", async (e) => {
             removeChildFromParent(cellProp.formula);
         }
 
-        let evaluatedValue = evaluateFormula(inputFormula);
 
 
-        addChildToGraphComponent(inputFormula,  address);
+        addChildToGraphComponent(inputFormula, address);
         // Check formula is cyclic or not, then only evaluate
         // True -> cycle, False -> not cyclic
         let cycleResponse = isGraphCyclic(graphComponentMatrix);
@@ -46,6 +48,8 @@ formulaBar.addEventListener("keydown", async (e) => {
             return;
         }
 
+        let evaluatedValue = evaluateFormula(inputFormula);
+
         setCellUIAndCellProp(evaluatedValue, inputFormula, address);   // To update UI, DB
         addChildToParent(inputFormula);   /// To add child (current) cell address to parents cell's children array
         updateChildrenCells(address);
@@ -59,7 +63,7 @@ function removeChildFromGraphComponent(formula, childAddress) {
     let encodedFormula = formula.split(" ");
     for (let i = 0; i < encodedFormula.length; i++) {
         let asciiValue = encodedFormula[i].charCodeAt(0);
-        if(asciiValue >= 65 && asciiValue <= 90) {
+        if (asciiValue >= 65 && asciiValue <= 90) {
             let [prid, pcid] = decodeRidCidUsingAddress(encodedFormula[i]);
             // B1: A1 + 10
             // rid -> i, cid -> j
@@ -74,7 +78,7 @@ function addChildToGraphComponent(formula, childAddress) {
     let encodedFormula = formula.split(" ");
     for (let i = 0; i < encodedFormula.length; i++) {
         let asciiValue = encodedFormula[i].charCodeAt(0);
-        if(asciiValue >= 65 && asciiValue <= 90) {
+        if (asciiValue >= 65 && asciiValue <= 90) {
             let [prid, pcid] = decodeRidCidUsingAddress(encodedFormula[i]);
             // B1: A1 + 10
             // rid -> i, cid -> j
@@ -126,13 +130,13 @@ function removeChildFromParent(formula) {
 
 function evaluateFormula(formula) {
     let encodedFormula = formula.split(" ");
-    encodedFormula.forEach((val, i) => {
+    for (let i = 0; i < encodedFormula.length; i++) {
         let asciiValue = val.charCodeAt(0);
         if (asciiValue >= 65 && asciiValue <= 90) {
-            let [cell, cellProp] = getCellAndCellProp(val);
+            let [cell, cellProp] = getCellAndCellProp(encodedFormula[i]);
             encodedFormula[i] = cellProp.value;
         }
-    })
+    }
     console.log(encodedFormula)
     let decodeFormula = encodedFormula.join(" ");
     return eval(decodeFormula);

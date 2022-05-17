@@ -7,7 +7,6 @@ let fontFamily = document.querySelector(".font-family-prop");
 let fontColor = document.querySelector(".font-color-prop");
 let bgColor = document.querySelector(".bg-color-prop");
 let alignment = document.querySelectorAll(".alignment");
-let formulaBar = document.querySelector(".formula-bar");
 
 let leftAlign = alignment[0];
 let rightAlign = alignment[2];
@@ -166,7 +165,7 @@ function addListernterToAttachCellProperties(cell) {
         
         let formulaBar = document.querySelector(".formula-bar");
         formulaBar.value = cellProp.formula;
-        cell.value = cellProp.value;
+        cell.innerText = cellProp.value;
     })
 }
                     
