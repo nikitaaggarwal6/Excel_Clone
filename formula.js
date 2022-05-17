@@ -12,11 +12,12 @@ allCells.forEach(cell => {
         removeChildFromParent(cellProp.formula);
         cellProp.formula = "";
         updateChildrenCells(address);
+        
     })
 })
 
 
-formulaBar.addEventListener("keydown", (e) => {
+formulaBar.addEventListener("keydown", async (e) => {
     let inputFormula = formulaBar.value;
     if (e.key === "Enter" && inputFormula) {
 
@@ -33,9 +34,14 @@ formulaBar.addEventListener("keydown", (e) => {
         addChildToGraphComponent(inputFormula,  address);
         // Check formula is cyclic or not, then only evaluate
         // True -> cycle, False -> not cyclic
-        let isCyclic = isGraphCyclic(graphComponentMatrix);
-        if (isCyclic === true) {
-            alert("Your formula forms cycle!");
+        let cycleResponse = isGraphCyclic(graphComponentMatrix);
+        if (cycleResponse) {
+            let response = confirm("Your formula forms cycle! Do you want to trace Path?");
+            while (response === true) {
+                // Keep on tracking color until user wants to keep watching cycle 
+                await isGraphCyclicTracePath(graphComponentMatrix, cycleResponse);
+                response = confirm("Your formula forms cycle! Do you want to trace Path?");
+            }
             removeChildFromGraphComponent(inputFormula, address);
             return;
         }

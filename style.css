@@ -111,6 +111,7 @@ body {
     width: 3vw;
     height: 90%;
     padding: .1rem;
+    cursor: pointer;
 }
 
 .sheet-add-icon > * {
@@ -124,12 +125,23 @@ body {
     width: 98vw;
     display: flex;
     align-items: flex-end;
+    overflow: auto;
 }
 
 .sheet-folder {
+    height: 80%;
     text-decoration: underline;
     font-weight: bold;
     text-decoration-thickness: 3px;
+    /* font-size: 0.9rem; */
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sheet-content {
+    width: 5rem;
 }
 
 .grid-cont {

@@ -1,13 +1,15 @@
 // Strorage
+
+let collectedGraphComponent = [];
 let graphComponentMatrix = [];
 
-for (let i = 0; i < rows; i++) {
-    let row = [];
-    for (let j = 0; j < cols; j++) {
-        row.push([]);
-    }
-    graphComponentMatrix.push(row);
-}
+// for (let i = 0; i < rows; i++) {
+//     let row = [];
+//     for (let j = 0; j < cols; j++) {
+//         row.push([]);
+//     }
+//     graphComponentMatrix.push(row);
+// }
 
 
 function isGraphCyclic(graphComponentMatrix) {
@@ -31,12 +33,12 @@ function isGraphCyclic(graphComponentMatrix) {
             if (visited[i][j] === false) {
                 // console.log(DFSvisited);
                 let response = dfsCycleDetection(graphComponentMatrix, i, j, visited, DFSvisited);
-                if (response === true) return true;
+                if (response === true) return [i, j];
             }
         }
     }
 
-    return false;
+    return null;
 }
 
 

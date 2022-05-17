@@ -17,27 +17,12 @@ let activeColorProp = "#d1d8e0";
 let inactiveColorProp = "#ecf0f1";
 
 // Storage
+let collectedSheetDB = [];
 let sheetDB = [];
 
-for (let i = 0; i < rows; i++) {
-    let sheetRow = [];
-    for (let j = 0; j < cols; j++) {
-        let cellProp = {
-            bold: false,
-            italic: false,
-            underline: false,
-            alignment: "left",
-            fontFamily: "monospace",
-            fontSize: "14",
-            fontColor: "#000000",
-            bgColor: "#000000",
-            value: "", 
-            formula: "",
-            children: []
-        }
-        sheetRow.push(cellProp);
-    }
-    sheetDB.push(sheetRow);
+{
+    let addSheetBtn = document.querySelector(".sheet-add-icon");
+    addSheetBtn.click();
 }
 
 
@@ -178,7 +163,8 @@ function addListernterToAttachCellProperties(cell) {
                 centerAlign.style.backgroundColor = activeColorProp;
                 break;
         }
-
+        
+        let formulaBar = document.querySelector(".formula-bar");
         formulaBar.value = cellProp.formula;
         cell.value = cellProp.value;
     })
