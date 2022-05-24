@@ -84,7 +84,7 @@ fontColor.addEventListener("click", (e) => {
 
 bgColor.addEventListener("click", (e) => {
     let address = addressBar.value;
-    let [cell, cellProp] = activecactivecellAndPropell(address);
+    let [cell, cellProp] = getCellAndCellProp(address);
 
     cellProp.bgColor = bgColor.value;
     cell.style.backgroundColor = cellProp.bgColor === "#000000" ? "transparent" : cellProp.bgColor;

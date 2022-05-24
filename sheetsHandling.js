@@ -14,6 +14,7 @@ addSheetBtn.addEventListener("click", (e) => {
     `;
 
     sheetsFolderCont.appendChild(sheet);
+    sheet.scrollIntoView();
 
     // DB
     createSheetDB();
@@ -70,7 +71,7 @@ function handleSheetUIRemoval(sheet) {
 
 
 function handleSheetDB(sheetIdx) {
-    sheetDB = collectedGraphComponent[sheetIdx];
+    sheetDB = collectedSheetDB[sheetIdx];
     graphComponentMatrix = collectedGraphComponent[sheetIdx];
 }
 

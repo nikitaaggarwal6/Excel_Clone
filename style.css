@@ -16,8 +16,19 @@ body {
 }
 
 .page-actions {
-    margin: 0.5rem;
+    height: 1.5rem;
+    width: 2.5rem;
+    margin: 0.5rem 0.5rem 0rem 0.5rem;
+    text-align: center;
     color: linen;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.selected-page-actions {
+    background-color: #ecf0f1;
+    color: black;
 }
 
 .cellprop-actions-cont {
@@ -138,6 +149,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 
 .sheet-content {
